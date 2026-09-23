@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#15803d" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="description" content="AgroExpress - Smart agricultural e-commerce app connecting farmers to nearby Mandi shops for seeds, fertilizers, pesticides, and tools with fast delivery." />
+  <title>AgroExpress - Smart Agricultural E-Commerce for Farmers</title>
+
+  <!-- Web App Manifest -->
+  <link rel="manifest" href="manifest.json" />
+
+  <!-- Google Font: Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Core Stylesheet -->
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+  <!-- Device Environment Wrapper -->
+  <div class="device-environment" id="deviceEnv">
+
+    <!-- Top Preview Bar for Desktop Viewers -->
+    <header class="desktop-preview-bar">
+      <div class="badge-label">
+        <span class="pulse-dot"></span>
+        <span>AgroExpress Mobile Web App</span>
+      </div>
+      <button class="view-toggle-btn" id="viewToggleBtn">🖥️ Fullscreen View</button>
+    </header>
+
+    <!-- Main Mobile Application Frame -->
+    <main class="mobile-app-frame" id="mobileFrame">
+      <div class="mobile-notch"></div>
+
+      <!-- App Header -->
+      <header class="app-header">
+        <div class="header-top-row">
+          <div class="brand-wrapper">
+            <div class="brand-logo-icon">🌾</div>
+            <div class="brand-text">
+              <h1>Agro<span class="express-tag">Express</span></h1>
+              <p id="appTagline">Smart Local Mandi Delivery</p>
+            </div>
+          </div>
+          <div class="header-actions">
+            <button class="btn-lang" id="langToggleBtn" title="Choose Language / भाषा निवडा">
+              <span id="currentLangTag">🌐 English</span>
+            </button>
+            <a href="tel:18001801551" class="btn-help" title="Kisan Call Centre Toll-Free (1800-180-1551)">
+              📞
+            </a>
+          </div>
+        </div>
+
+        <!-- Location Bar -->
+        <div class="location-selector-bar" id="locationSelectorBar" title="Change delivery location">
+          <div class="loc-left">
+            <span class="loc-pin">📍</span>
+            <div>
+              <div class="loc-text" id="locText">Kisan Nagar Mandi Hub</div>
+              <div class="loc-sub" id="locSub">Within 5 km radius • PIN 452001</div>
+            </div>
+          </div>
+          <span class="loc-change" id="locChangeBtn">Change ▾</span>
+        </div>
+
+        <!-- Search Bar with Voice Simulator -->
+        <div class="search-container">
+          <span class="search-icon">🔍</span>
+          <input 
+            type="text" 
+            class="search-input" 
+            id="searchInput" 
+            placeholder="Search seeds, urea, pesticides, tools..." 
+            autocomplete="off"
+          />
+          <button class="mic-btn" id="micBtn" title="Speak to search (Bol kar khojein)">
+            🎙️
+          </button>
+        </div>
+
+        <!-- Quick Filter Tags -->
+        <div class="quick-tags-scroller" id="quickTagsScroller">
+          <span class="quick-tag" data-query="all" id="tagAll">🌾 All Items</span>
+          <span class="quick-tag" data-query="Urea" id="tagUrea">🧪 Neem Urea</span>
+          <span class="quick-tag" data-query="DAP" id="tagDAP">🧪 IFFCO DAP</span>
+          <span class="quick-tag" data-query="Wheat Seeds" id="tagWheat">🌱 Wheat Seeds</span>
+          <span class="quick-tag" data-query="Basmati" id="tagBasmati">🌱 Basmati Paddy</span>
+          <span class="quick-tag" data-query="Pesticide" id="tagPest">🛡️ Bio-Pesticide</span>
+          <span class="quick-tag" data-query="Sprayer" id="tagSprayer">🚜 Sprayer Pump</span>
+        </div>
+      </header>
+
+      <!-- Scrollable App Content -->
+      <section class="app-content" id="appContent">
+
+        <!-- Promotional Carousel -->
+        <div class="banner-carousel-container">
+          <div class="banner-carousel" id="bannerCarousel"></div>
+        </div>
+
+        <!-- Category Filter Pills -->
+        <div class="categories-container">
+          <div class="categories-pills" id="categoriesPills"></div>
+        </div>
+
+        <!-- Crop Dosage Calculator Banner Card -->
+        <div class="calculator-card-promo" onclick="AgroApp.handleNavTab ? AgroApp.handleNavTab('dosage') : document.getElementById('modalDosage').classList.add('active');">
+          <div class="calc-icon-box">📐</div>
+          <div class="calc-info">
+            <h4 id="dosageCardTitle">Crop Dosage Calculator</h4>
+            <p id="dosageCardSub">Know exact Bags of Urea, DAP & Seed for your field</p>
+          </div>
+          <button class="calc-btn-mini" id="calcBtnMini">Calculate →</button>
+        </div>
+
+        <!-- Nearby Retail Shops Section -->
+        <div id="shopsSection">
+          <div class="section-header">
+            <h3 class="section-title">
+              <span class="title-icon">🏪</span> <span id="nearbyShopsTitle">Nearby Agri Retailers</span>
+            </h3>
+            <span class="section-link" id="viewAllShopsLink" onclick="AgroApp.filterByCategory('all')">View All</span>
+          </div>
+          <div class="shops-scroller" id="shopsScroller"></div>
+        </div>
+
+        <!-- Product Catalog Section -->
+        <div id="productsSection">
+          <div class="section-header">
+            <h3 class="section-title">
+              <span class="title-icon">📦</span> <span id="productsTitle">Certified Farm Products</span>
+            </h3>
+            <span class="section-link" id="resetProductsLink" onclick="AgroApp.filterByCategory('all')">Reset</span>
+          </div>
+          <div class="products-grid" id="productsGrid"></div>
+        </div>
+
+      </section>
+
+      <!-- Floating Cart Bottom Bar (Visible when items in cart) -->
+      <div class="floating-cart-bar" id="floatingCartBar" style="display: none;">
+        <div class="floating-cart-left">
+          <span class="floating-cart-count" id="floatingCartCount">0 items</span>
+          <div>
+            <div class="floating-cart-price" id="floatingCartPrice">₹0</div>
+            <div class="floating-cart-sub" id="floatingCartSub">Free Mandi Delivery above ₹1000</div>
+          </div>
+        </div>
+        <div class="floating-cart-btn" id="floatingCartBtn">
+          View Cart 🛒 →
+        </div>
+      </div>
+
+      <!-- Bottom Navigation Bar -->
+      <nav class="bottom-nav" id="bottomNav">
+        <button class="nav-tab active" data-tab="home">
+          <span class="tab-icon">🏠</span>
+          <span id="navHomeText">Home</span>
+        </button>
+        <button class="nav-tab" data-tab="shops">
+          <span class="tab-icon">🏪</span>
+          <span id="navShopsText">Shops</span>
+        </button>
+        <button class="nav-tab" data-tab="dosage">
+          <span class="tab-icon">🧪</span>
+          <span id="navDosageText">Dosage</span>
+        </button>
+        <button class="nav-tab" data-tab="cart">
+          <span class="tab-icon">🛒</span>
+          <span id="navCartText">Cart</span>
+          <span class="nav-badge" id="cartBadgeNav" style="display: none;">0</span>
+        </button>
+        <button class="nav-tab" data-tab="orders">
+          <span class="tab-icon">📦</span>
+          <span id="navOrdersText">Orders</span>
+        </button>
+      </nav>
+
+    </main>
+
+  </div>
+
+  <!-- ==================== MODALS & BOTTOM SHEETS ==================== -->
+
+  <!-- 1. Product Detail Sheet -->
+  <div class="modal-overlay" id="modalProduct">
+    <div class="bottom-sheet">
+      <div class="sheet-handle"></div>
+      <div class="sheet-header">
+        <h4 class="sheet-title">🌾 Product Details</h4>
+        <button class="btn-close-sheet">✕</button>
+      </div>
+      <div class="sheet-body" id="productDetailContent"></div>
+    </div>
+  </div>
+
+  <!-- 2. Shop Details Sheet -->
+  <div class="modal-overlay" id="modalShop">
+    <div class="bottom-sheet">
+      <div class="sheet-handle"></div>
+      <div class="sheet-header">
+        <h4 class="sheet-title">🏪 Local Agri Store</h4>
+        <button class="btn-close-sheet">✕</button>
+      </div>
+      <div class="sheet-body" id="shopDetailContent"></div>
+    </div>
+  </div>
+
+  <!-- 3. Cart Sheet -->
+  <div class="modal-overlay" id="modalCart">
+    <div class="bottom-sheet">
+      <div class="sheet-handle"></div>
+      <div class="sheet-header">
+        <h4 class="sheet-title">🛒 Your Farm Cart</h4>
+        <button class="btn-close-sheet">✕</button>
+      </div>
+      <div class="sheet-body" id="cartSheetBody"></div>
+      <div class="sheet-footer" id="cartSheetFooter"></div>
+    </div>
+  </div>
+
+  <!-- 4. Express Checkout Sheet -->
+  <div class="modal-overlay" id="modalCheckout">
+    <div class="bottom-sheet">
+      <div class="sheet-handle"></div>
+      <div class="sheet-header">
+        <h4 class="sheet-title">⚡ Express Delivery Checkout</h4>
+        <button class="btn-close-sheet">✕</button>
+      </div>
+      <div class="sheet-body">
+        <form id="checkoutForm">
+          <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 12px; margin-bottom: 14px;" id="checkoutItemsSummary"></div>
+
+          <div class="calc-field-group">
+            <label class="calc-label" for="farmerName">Farmer / Buyer Full Name *</label>
+            <input type="text" id="farmerName" class="calc-input" placeholder="e.g. Ramesh Patel" required value="Ramesh Patel" />
+          </div>
+
+          <div class="calc-field-group">
+            <label class="calc-label" for="farmerPhone">Mobile Number (For Delivery OTP) *</label>
+            <input type="tel" id="farmerPhone" class="calc-input" placeholder="e.g. 9876543210" pattern="[0-9]{10}" required value="9876543210" />
+          </div>
+
+          <div class="calc-field-group">
+            <label class="calc-label" for="villageAddress">Village / Farm Location / House Address *</label>
+            <textarea id="villageAddress" class="calc-input" style="height: 65px; resize: none;" required placeholder="e.g. Near Shiv Mandir, Village Simrol, Indore Rural">Village Simrol, Near Gram Panchayat Office</textarea>
+          </div>
+
+          <div class="calc-field-group">
+            <label class="calc-label">Choose Payment Method *</label>
+            <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 6px;">
+              <label style="display: flex; align-items: center; gap: 10px; background: #f8fafc; padding: 10px; border-radius: 8px; border: 1px solid #cbd5e1; cursor: pointer;">
+                <input type="radio" name="payMethod" value="Cash on Delivery (COD)" checked />
+                <div>
+                  <strong style="font-size: 13px; color: #0f172a;">💵 Cash on Delivery (COD)</strong>
+                  <div style="font-size: 11px; color: #64748b;">Pay cash upon delivery at your farm gate</div>
+                </div>
+              </label>
+
+              <label style="display: flex; align-items: center; gap: 10px; background: #f8fafc; padding: 10px; border-radius: 8px; border: 1px solid #cbd5e1; cursor: pointer;">
+                <input type="radio" name="payMethod" value="UPI / QR on Delivery" />
+                <div>
+                  <strong style="font-size: 13px; color: #0f172a;">📱 UPI / QR Code on Delivery</strong>
+                  <div style="font-size: 11px; color: #64748b;">Google Pay, PhonePe, Paytm upon inspection</div>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <div style="margin-top: 18px;">
+            <button type="submit" class="btn-primary-action">
+              <span>Place Order (<span id="checkoutTotalAmount">₹0</span>)</span>
+              <span>🚜 →</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. Orders & Live Tracking Sheet -->
+  <div class="modal-overlay" id="modalOrders">
+    <div class="bottom-sheet">
+      <div class="sheet-handle"></div>
+      <div class="sheet-header">
+        <h4 class="sheet-title">📦 Farm Orders & Tracking</h4>
+        <button class="btn-close-sheet">✕</button>
+      </div>
+      <div class="sheet-body" id="ordersListBody"></div>
+    </div>
+  </div>
+
+  <!-- 6. Crop Dosage Calculator Sheet -->
+  <div class="modal-overlay" id="modalDosage">
+    <div class="bottom-sheet">
+      <div class="sheet-handle"></div>
+      <div class="sheet-header">
+        <h4 class="sheet-title">📐 Crop Dosage & Requirement</h4>
+        <button class="btn-close-sheet">✕</button>
+      </div>
+      <div class="sheet-body">
+        <div class="calc-field-group">
+          <label class="calc-label" for="dosageCropSelect">Select Your Crop (फसल चुनें):</label>
+          <select id="dosageCropSelect" class="calc-select">
+            <option value="wheat">Wheat (गेहूं / गहू)</option>
+            <option value="paddy">Paddy / Rice (धान / भात)</option>
+            <option value="soybean">Soybean (सोयाबीन)</option>
+            <option value="gram">Bengal Gram / Harbhara (चना / हरभरा)</option>
+            <option value="mustard">Mustard (सरसों / मोहरी)</option>
+            <option value="cotton">Cotton (कपास / कापूस)</option>
+            <option value="potato">Potato (आलू / बटाटा)</option>
+            <option value="sugarcane">Sugarcane (गन्ना / ऊस)</option>
+          </select>
+        </div>
+
+        <div class="calc-field-group">
+          <label class="calc-label" for="dosageAcresInput">Total Farm Area in Acres (एकड़ दर्ज करें):</label>
+          <input type="number" id="dosageAcresInput" class="calc-input" min="0.5" max="100" step="0.5" value="2" />
+        </div>
+
+        <div id="dosageResultContainer" class="calc-result-box"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. Location Selector Sheet -->
+  <div class="modal-overlay" id="modalLocation">
+    <div class="bottom-sheet">
+      <div class="sheet-handle"></div>
+      <div class="sheet-header">
+        <h4 class="sheet-title">📍 Select Your Mandi / Location</h4>
+        <button class="btn-close-sheet">✕</button>
+      </div>
+      <div class="sheet-body">
+        <p style="font-size: 12.5px; color: #64748b; margin-bottom: 14px;">
+          Select your local tehsil or Mandi market to find nearby agricultural shops within 5-10 km.
+        </p>
+        <div class="calc-field-group">
+          <label class="calc-label" for="locationInput">Town / Mandi / Village Name:</label>
+          <input type="text" id="locationInput" class="calc-input" value="Kisan Nagar Mandi Hub" />
+        </div>
+        <div class="calc-field-group">
+          <label class="calc-label" for="pincodeInput">Pincode:</label>
+          <input type="text" id="pincodeInput" class="calc-input" value="452001" maxlength="6" />
+        </div>
+        <button class="btn-primary-action" id="saveLocationBtn">
+          Save Location & Find Shops
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 8. Multi-Language Selector Sheet -->
+  <div class="modal-overlay" id="modalLanguage">
+    <div class="bottom-sheet">
+      <div class="sheet-handle"></div>
+      <div class="sheet-header">
+        <h4 class="sheet-title" id="langModalTitle">🌐 Select Language / भाषा निवडा</h4>
+        <button class="btn-close-sheet">✕</button>
+      </div>
+      <div class="sheet-body">
+        <p style="font-size: 12.5px; color: #64748b; margin-bottom: 14px;" id="langModalDesc">
+          Choose your preferred language for farming products, prices, and crop guidance:
+        </p>
+
+        <div class="lang-options-grid" id="langOptionsGrid">
+          <!-- English -->
+          <div class="lang-card" data-lang="en">
+            <span class="lang-flag">🇬🇧</span>
+            <div class="lang-names">
+              <div class="lang-primary">English</div>
+              <div class="lang-secondary">Standard English UI & product details</div>
+            </div>
+            <div class="lang-check">✓</div>
+          </div>
+
+          <!-- Hindi -->
+          <div class="lang-card" data-lang="hi">
+            <span class="lang-flag">🇮🇳</span>
+            <div class="lang-names">
+              <div class="lang-primary">हिन्दी (Hindi)</div>
+              <div class="lang-secondary">सरल हिंदी में कृषि उत्पाद, भाव एवं सलाह</div>
+            </div>
+            <div class="lang-check">✓</div>
+          </div>
+
+          <!-- Marathi -->
+          <div class="lang-card" data-lang="mr">
+            <span class="lang-flag">🚩</span>
+            <div class="lang-names">
+              <div class="lang-primary">मराठी (Marathi)</div>
+              <div class="lang-secondary">महाराष्ट्रातील शेतकऱ्यांसाठी अस्सल मराठी</div>
+            </div>
+            <div class="lang-check">✓</div>
+          </div>
+        </div>
+
+        <button class="btn-primary-action" id="confirmLangBtn" style="margin-top: 8px;">
+          Apply Language / भाषा लागू करा
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Box -->
+  <div class="toast-box" id="toastBox">Notification</div>
+
+  <!-- Scripts -->
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+
+</body>
+</html>
