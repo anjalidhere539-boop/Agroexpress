@@ -477,19 +477,27 @@
     }
 
     // Language Modal Trigger Button
-    dom.langToggleBtn.addEventListener('click', () => {
-      state.pendingLanguage = state.language;
-      updateLanguageCardsUI();
-      openModal(dom.modalLanguage);
-    });
+    if (dom.langToggleBtn) {
+      dom.langToggleBtn.addEventListener('click', () => {
+        state.pendingLanguage = state.language;
+        updateLanguageCardsUI();
+        openModal(dom.modalLanguage);
+      });
+    }
 
-    // Language Card Click
+    // Language Card Click - Instant Switch
     if (dom.langOptionsGrid) {
       dom.langOptionsGrid.addEventListener('click', (e) => {
         const card = e.target.closest('.lang-card');
         if (!card) return;
-        state.pendingLanguage = card.getAttribute('data-lang');
+        const selectedLang = card.getAttribute('data-lang');
+        state.pendingLanguage = selectedLang;
         updateLanguageCardsUI();
+        // Immediately apply language for quick UX!
+        applyLanguage(selectedLang, true);
+        setTimeout(() => {
+          closeAllModals();
+        }, 300);
       });
     }
 
@@ -1047,6 +1055,7 @@
 
     const cartItem = state.cart.find(c => c.productId === product.id);
     const inCartQty = cartItem ? cartItem.qty : 0;
+    const isWishlisted = state.wishlist.includes(product.id);
     const displayName = getLocalizedText(product, 'name');
     const shopDisplayName = getLocalizedText(AGRO_DATA.shops.find(s => s.id === product.shopId), 'name') || product.shopName;
     const t = i18n[state.language];
@@ -1061,8 +1070,18 @@
     const descHeading = state.language === 'mr' ? 'वर्णन व पीक फायदे:' : (state.language === 'hi' ? 'विवरण एवं फसल लाभ:' : 'Description & Crop Benefits:');
     const techHeading = state.language === 'mr' ? 'तांत्रिक माहिती (Technical Specs):' : (state.language === 'hi' ? 'तकनीकी जानकारी:' : 'Technical Specifications:');
 
+    const wishlistBtnText = isWishlisted 
+      ? (state.language === 'mr' ? '❤️ आवडीच्या यादीत जोडले आहे (Wishlist)' : (state.language === 'hi' ? '❤️ विशलिस्ट में सुरक्षित (Wishlist)' : '❤️ Saved to Wishlist'))
+      : (state.language === 'mr' ? '🤍 आवडीच्या यादीत जोडा (Add to Wishlist)' : (state.language === 'hi' ? '🤍 विशलिस्ट में जोड़ें (Add to Wishlist)' : '🤍 Add to Wishlist'));
+
     dom.productDetailContent.innerHTML = `
-      <div class="product-detail-hero">
+      <div class="product-detail-hero" style="position: relative;">
+        <button class="card-wishlist-btn ${isWishlisted ? 'active' : ''}" 
+                onclick="event.stopPropagation(); AgroApp.toggleWishlist('${product.id}');"
+                style="position: absolute; top: 12px; right: 12px; width: 42px; height: 42px; font-size: 20px; z-index: 10; background: rgba(255,255,255,0.92); border-radius: 50%; box-shadow: 0 4px 12px rgba(0,0,0,0.15);"
+                title="Wishlist">
+          ${isWishlisted ? '❤️' : '🤍'}
+        </button>
         <img src="${product.image}" alt="${product.name}" />
       </div>
 
@@ -1102,7 +1121,14 @@
         ${specsRows}
       </table>
 
-      <div style="margin-top: 20px;">
+      <!-- Wishlist Option & Cart Actions -->
+      <div style="margin-top: 18px; display: flex; flex-direction: column; gap: 10px;">
+        <button class="btn-modal-wishlist ${isWishlisted ? 'active' : ''}" 
+                onclick="AgroApp.toggleWishlist('${product.id}');"
+                style="width: 100%; height: 44px; display: flex; align-items: center; justify-content: center; gap: 8px; border-radius: 12px; font-weight: 700; font-size: 13.5px; border: 1.5px solid ${isWishlisted ? '#f43f5e' : '#cbd5e1'}; background: ${isWishlisted ? '#fff1f2' : '#ffffff'}; color: ${isWishlisted ? '#e11d48' : '#334155'}; cursor: pointer; transition: all 0.2s ease;">
+          <span>${wishlistBtnText}</span>
+        </button>
+
         ${inCartQty > 0 ? `
           <div style="display: flex; gap: 12px; align-items: center;">
             <div class="qty-stepper" style="flex: 1; height: 44px;">
@@ -1110,12 +1136,12 @@
               <span style="font-size: 16px;">${inCartQty} ${t.inCart}</span>
               <button onclick="AgroApp.updateCartQty('${product.id}', 1); AgroApp.openProductModal('${product.id}');">+</button>
             </div>
-            <button class="btn-primary-action" style="flex: 1; padding: 12px;" onclick="AgroApp.openCartSheet()">
+            <button class="btn-primary-action" style="flex: 1; padding: 12px; height: 44px; border-radius: 12px;" onclick="AgroApp.openCartSheet()">
               ${t.viewCartBtn}
             </button>
           </div>
         ` : `
-          <button class="btn-primary-action" onclick="AgroApp.addToCart('${product.id}'); AgroApp.openProductModal('${product.id}');">
+          <button class="btn-primary-action" style="height: 46px; border-radius: 12px; font-size: 14.5px;" onclick="AgroApp.addToCart('${product.id}'); AgroApp.openProductModal('${product.id}');">
             🛒 ${t.addToCart} (₹${product.price})
           </button>
         `}
@@ -1467,6 +1493,9 @@
 
     if (dom.modalWishlist && dom.modalWishlist.classList.contains('active')) {
       renderWishlistSheet();
+    }
+    if (dom.modalProduct && dom.modalProduct.classList.contains('active')) {
+      openProductModal(productId);
     }
   }
 

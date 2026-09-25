@@ -13,7 +13,7 @@ const AGRO_DATA = {
       marathiName: 'सर्व उत्पादने', 
       icon: '🌾',
       thumb: 'images/fertilizers/iffco_urea_45kg.jpg', 
-      count: 29 
+      count: 35 
     },
     { 
       id: 'fertilizers', 
@@ -40,7 +40,7 @@ const AGRO_DATA = {
       marathiName: 'पीक संरक्षण', 
       icon: '🛡️', 
       thumb: 'https://images.unsplash.com/photo-1592417817098-8f3d6910985c?auto=format&fit=crop&w=300&q=80',
-      count: 5 
+      count: 11 
     },
     { 
       id: 'tools', 
@@ -841,6 +841,162 @@ const AGRO_DATA = {
         'Ovi-larvicidal': 'Kills pest eggs and larvae instantly',
         'Dosage': '0.4 ml per Litre of water (60ml / Acre)',
         'Target Crops': 'Sugarcane, Paddy, Soybean, Corn, Cotton'
+      }
+    },
+    {
+      id: 'pest-6',
+      name: 'Syngenta Ampligo Insecticide (Chlorantraniliprole + Lambda) 200ml',
+      hindiName: 'सिंजेंटा एम्पलिगो कीटनाशक (200 मिली)',
+      marathiName: 'सिंजेंटा ॲम्प्लिगो कीटकनाशक (200 मिली)',
+      category: 'pesticides',
+      shopId: 'shop-1',
+      shopName: 'Kisan Krishi Seva Kendra',
+      price: 1150,
+      originalPrice: 1280,
+      discount: '10% OFF',
+      packageSize: '200 ml Bottle',
+      rating: 4.9,
+      reviews: 195,
+      inStock: true,
+      stockCount: 40,
+      featured: true,
+      image: 'https://images.unsplash.com/photo-1585314062340-f1a5a7c9328d?auto=format&fit=crop&w=600&q=80',
+      description: 'Syngenta Ampligo with dual-mode action delivers instant knockdown and long residual control against Helicoverpa, stem borers, and defoliators.',
+      specs: {
+        'Active Molecule': 'Chlorantraniliprole 9.3% + Lambda-cyhalothrin 4.6% ZC',
+        'Crops': 'Soybean, Cotton, Pigeon pea, Corn, Vegetables',
+        'Dosage': '80 - 100 ml per Acre',
+        'Action': 'Dual Contact & Ingestion Action'
+      }
+    },
+    {
+      id: 'pest-7',
+      name: 'Coromandel Fantac Plus Plant Booster & Bio-Stimulant (500ml)',
+      hindiName: 'कोरोमंडल फैंटैक प्लस फसल टॉनिक (500 मिली)',
+      marathiName: 'कोरोमंडल फॅन्टॅक प्लस पीक वाढ व टॉनिक (500 मिली)',
+      category: 'pesticides',
+      shopId: 'shop-2',
+      shopName: 'Jai Kisan Agro Chemicals',
+      price: 720,
+      originalPrice: 850,
+      discount: '15% OFF',
+      packageSize: '500 ml Bottle',
+      rating: 4.8,
+      reviews: 230,
+      inStock: true,
+      stockCount: 50,
+      featured: false,
+      image: 'https://images.unsplash.com/photo-1592417817098-8f3d6910985c?auto=format&fit=crop&w=600&q=80',
+      description: 'Coromandel Fantac Plus is fortified with amino acids and vitamins to stimulate vegetative growth, enhance flowering, and arrest flower and fruit dropping.',
+      specs: {
+        'Composition': 'Amino acids, Peptides, Plant growth stimulants',
+        'Benefits': 'Increases chlorophyll, enhances fruit setting & weight',
+        'Dosage': '1 - 1.5 ml per Litre of water',
+        'Application': 'Foliar spray at vegetative and flowering stage'
+      }
+    },
+    {
+      id: 'pest-8',
+      name: 'Godrej Double Bio-Stimulant & Flower Booster (250ml)',
+      hindiName: 'गोदरेज डबल फूल व फल वर्धक टॉनिक (250 मिली)',
+      marathiName: 'गोदरेज डबल फुलगळ प्रतिबंधक व उत्पादन वाढ (250 मिली)',
+      category: 'pesticides',
+      shopId: 'shop-4',
+      shopName: 'MahaAgro Kisan Super Market',
+      price: 530,
+      originalPrice: 620,
+      discount: '14% OFF',
+      packageSize: '250 ml Bottle',
+      rating: 4.8,
+      reviews: 175,
+      inStock: true,
+      stockCount: 35,
+      featured: true,
+      image: 'https://images.unsplash.com/photo-1595974482597-4b8da8879bc5?auto=format&fit=crop&w=600&q=80',
+      description: 'Godrej Double contains Homobrassinolide to stimulate cell division and elongation, ensuring uniform flower development, higher pod filling, and resistance to environmental stress.',
+      specs: {
+        'Active': 'Homobrassinolide 0.04%',
+        'Key Benefit': 'Stops flower drop, increases branch flowering',
+        'Target Crops': 'Cotton, Chilli, Tomato, Grapes, Pulses',
+        'Dosage': '100 ml per Acre (0.5 ml / Litre)'
+      }
+    },
+    {
+      id: 'pest-9',
+      name: 'Dhanuka EM-1 Caterpillar & Pod Borer Insecticide (100g)',
+      hindiName: 'धनुका ईएम-1 कीटनाशक (100 ग्राम)',
+      marathiName: 'धानुका ईएम-1 अळीनाशक (100 ग्रॅम)',
+      category: 'pesticides',
+      shopId: 'shop-6',
+      shopName: 'Balaji Krishi Rasayan',
+      price: 420,
+      originalPrice: 480,
+      discount: '12% OFF',
+      packageSize: '100 Gram Pack',
+      rating: 4.7,
+      reviews: 140,
+      inStock: true,
+      stockCount: 60,
+      featured: false,
+      image: 'https://images.unsplash.com/photo-1628352081506-83c43123ed6d?auto=format&fit=crop&w=600&q=80',
+      description: 'Dhanuka EM-1 is an advanced water-soluble granule insecticide that paralyzes and eliminates bollworms, fruit borers, and DBM within hours of ingestion.',
+      specs: {
+        'Technical': 'Emamectin Benzoate 5% SG',
+        'Formulation': 'Soluble Granule (SG)',
+        'Dosage': '0.5 gram per Litre of water (80-100g / Acre)',
+        'Target Pests': 'Helicoverpa, Spodoptera, Fruit & Shoot Borer'
+      }
+    },
+    {
+      id: 'pest-10',
+      name: 'Bayer Nativo Premium Broad-Spectrum Fungicide (100g)',
+      hindiName: 'बायर नैटिवो फफूंदनाशक (100 ग्राम)',
+      marathiName: 'बायर नॅटिव्हो बुरशीनाशक (100 ग्रॅम)',
+      category: 'pesticides',
+      shopId: 'shop-1',
+      shopName: 'Kisan Krishi Seva Kendra',
+      price: 690,
+      originalPrice: 780,
+      discount: '11% OFF',
+      packageSize: '100 Gram Pouch',
+      rating: 4.9,
+      reviews: 310,
+      inStock: true,
+      stockCount: 28,
+      featured: true,
+      image: 'https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?auto=format&fit=crop&w=600&q=80',
+      description: 'Bayer Nativo combines two premier fungicides to give both preventive and curative systemic control of shealth blight, blast, powdery mildew, and anthracnose.',
+      specs: {
+        'Composition': 'Tebuconazole 50% + Trifloxystrobin 25% WG',
+        'Features': 'Quick absorption, rainfast in 2 hours, enhances grain quality',
+        'Dosage': '0.8 - 1 gram per Litre of water',
+        'Crops': 'Paddy, Wheat, Tomato, Mango, Grapes'
+      }
+    },
+    {
+      id: 'pest-11',
+      name: 'Excel Mera 71 Systemic Non-Selective Herbicide (5 x 100g Pack)',
+      hindiName: 'मेरा 71 खरपतवारनाशक (100 ग्राम x 5 पैक)',
+      marathiName: 'मेरा 71 तणनाशक (100 ग्रॅम x 5 पाकीट)',
+      category: 'pesticides',
+      shopId: 'shop-2',
+      shopName: 'Jai Kisan Agro Chemicals',
+      price: 490,
+      originalPrice: 550,
+      discount: '11% OFF',
+      packageSize: '500g Total (5 x 100g Packets)',
+      rating: 4.8,
+      reviews: 260,
+      inStock: true,
+      stockCount: 45,
+      featured: false,
+      image: 'https://images.unsplash.com/photo-1592417817098-8f3d6910985c?auto=format&fit=crop&w=600&q=80',
+      description: 'Excel Mera 71 is a highly effective non-selective post-emergence herbicide for complete root-level control of stubborn perennial and annual weeds on bunds and non-crop areas.',
+      specs: {
+        'Active Chemical': 'Ammonium Salt of Glyphosate 71% SG',
+        'Type': 'Systemic non-selective post-emergence',
+        'Dosage': '100g packet per 15-16L spray pump with water',
+        'Target Weeds': 'Cyperus rotundus, Cynodon dactylon, broadleaf weeds'
       }
     },
 
