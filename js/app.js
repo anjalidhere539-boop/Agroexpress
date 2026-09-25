@@ -13,9 +13,12 @@
     selectedCategory: 'all',
     searchQuery: '',
     shopFilterId: null,
+    activeSort: 'popular',
+    activeCatSidebar: 'fertilizers',
     language: localStorage.getItem('agro_lang') || 'en', // 'en', 'hi', 'mr'
     pendingLanguage: localStorage.getItem('agro_lang') || 'en',
     cart: JSON.parse(localStorage.getItem('agro_cart') || '[]'),
+    wishlist: JSON.parse(localStorage.getItem('agro_wishlist') || '[]'),
     orders: JSON.parse(localStorage.getItem('agro_orders') || '[]'),
     activeLocation: {
       title: 'Kisan Nagar Mandi Hub',
@@ -49,10 +52,12 @@
       floatingCartSub: 'Free Mandi Delivery above ₹1000',
       viewCartBtn: 'View Cart 🛒 →',
       navHome: 'Home',
+      navCategories: 'Categories',
       navShops: 'Shops',
       navDosage: 'Dosage',
       navCart: 'Cart',
       navOrders: 'Orders',
+      navAccount: 'Account',
       addToCart: 'Add to Cart',
       inCart: 'in Cart',
       cartTitle: '🛒 Your Farm Cart',
@@ -124,10 +129,12 @@
       floatingCartSub: '₹1000 से अधिक पर फ्री मंडी डिलीवरी',
       viewCartBtn: 'टोकरी देखें 🛒 →',
       navHome: 'होम',
+      navCategories: 'श्रेणियां',
       navShops: 'दुकानें',
       navDosage: 'मात्रा',
       navCart: 'टोकरी',
       navOrders: 'आर्डर',
+      navAccount: 'खाता',
       addToCart: 'खरीदें',
       inCart: 'टोकरी में',
       cartTitle: '🛒 आपकी किसान टोकरी',
@@ -199,10 +206,12 @@
       floatingCartSub: '₹1000 वरील खरेदीवर मोफत कृषी डिलिव्हरी',
       viewCartBtn: 'खरेदी टोपली पहा 🛒 →',
       navHome: 'मुख्य',
+      navCategories: 'कॅटेगरी',
       navShops: 'दुकान',
       navDosage: 'मात्रा',
       navCart: 'टोपली',
       navOrders: 'ऑर्डर्स',
+      navAccount: 'खाते',
       addToCart: 'खरेदी करा',
       inCart: 'टोपलीत',
       cartTitle: '🛒 तुमची शेतकरी खरेदी टोपली',
@@ -277,8 +286,15 @@
     locText: document.getElementById('locText'),
     locSub: document.getElementById('locSub'),
     locChangeBtn: document.getElementById('locChangeBtn'),
+    locSummaryText: document.getElementById('locSummaryText'),
+    headerWishlistBtn: document.getElementById('headerWishlistBtn'),
+    wishlistBadge: document.getElementById('wishlistBadge'),
+    headerCartBtn: document.getElementById('headerCartBtn'),
+    headerCartBadge: document.getElementById('headerCartBadge'),
     searchInput: document.getElementById('searchInput'),
+    cameraBtn: document.getElementById('cameraBtn'),
     micBtn: document.getElementById('micBtn'),
+    storyCategoriesWrapper: document.getElementById('storyCategoriesWrapper'),
     quickTagsScroller: document.getElementById('quickTagsScroller'),
     tagAll: document.getElementById('tagAll'),
     tagUrea: document.getElementById('tagUrea'),
@@ -296,6 +312,7 @@
     viewAllShopsLink: document.getElementById('viewAllShopsLink'),
     shopsScroller: document.getElementById('shopsScroller'),
     productsTitle: document.getElementById('productsTitle'),
+    productsCountBadge: document.getElementById('productsCountBadge'),
     resetProductsLink: document.getElementById('resetProductsLink'),
     productsGrid: document.getElementById('productsGrid'),
     floatingCartBar: document.getElementById('floatingCartBar'),
@@ -304,12 +321,13 @@
     floatingCartSub: document.getElementById('floatingCartSub'),
     floatingCartBtn: document.getElementById('floatingCartBtn'),
     cartBadgeNav: document.getElementById('cartBadgeNav'),
+    ordersBadgeNav: document.getElementById('ordersBadgeNav'),
     bottomNav: document.getElementById('bottomNav'),
     navHomeText: document.getElementById('navHomeText'),
+    navCategoriesText: document.getElementById('navCategoriesText'),
     navShopsText: document.getElementById('navShopsText'),
-    navDosageText: document.getElementById('navDosageText'),
-    navCartText: document.getElementById('navCartText'),
     navOrdersText: document.getElementById('navOrdersText'),
+    navAccountText: document.getElementById('navAccountText'),
     toastBox: document.getElementById('toastBox'),
 
     // Modals
@@ -342,7 +360,15 @@
 
     modalLanguage: document.getElementById('modalLanguage'),
     langOptionsGrid: document.getElementById('langOptionsGrid'),
-    confirmLangBtn: document.getElementById('confirmLangBtn')
+    confirmLangBtn: document.getElementById('confirmLangBtn'),
+
+    // Meesho-style Modals
+    modalCategories: document.getElementById('modalCategories'),
+    meeshoCatSidebar: document.getElementById('meeshoCatSidebar'),
+    meeshoCatContent: document.getElementById('meeshoCatContent'),
+    modalAccount: document.getElementById('modalAccount'),
+    modalWishlist: document.getElementById('modalWishlist'),
+    wishlistSheetBody: document.getElementById('wishlistSheetBody')
   };
 
   // --- INITIALIZATION ---
@@ -354,7 +380,9 @@
     renderShops();
     renderProducts();
     updateCartUI();
+    updateWishlistUI();
     calculateDosage();
+    renderCategoriesContent(state.activeCatSidebar);
   }
 
   // --- APPLY LANGUAGE GLOBALLY ---
@@ -392,10 +420,10 @@
 
     // Bottom Navigation
     if (dom.navHomeText) dom.navHomeText.textContent = t.navHome;
+    if (dom.navCategoriesText) dom.navCategoriesText.textContent = t.navCategories;
     if (dom.navShopsText) dom.navShopsText.textContent = t.navShops;
-    if (dom.navDosageText) dom.navDosageText.textContent = t.navDosage;
-    if (dom.navCartText) dom.navCartText.textContent = t.navCart;
     if (dom.navOrdersText) dom.navOrdersText.textContent = t.navOrders;
+    if (dom.navAccountText) dom.navAccountText.textContent = t.navAccount;
 
     // Floating Cart Bar
     if (dom.floatingCartSub) dom.floatingCartSub.textContent = t.floatingCartSub;
@@ -492,6 +520,25 @@
       }
     });
 
+    // Header Wishlist & Cart buttons
+    if (dom.headerWishlistBtn) {
+      dom.headerWishlistBtn.addEventListener('click', () => {
+        openWishlistModal();
+      });
+    }
+
+    if (dom.headerCartBtn) {
+      dom.headerCartBtn.addEventListener('click', () => {
+        openCartSheet();
+      });
+    }
+
+    if (dom.cameraBtn) {
+      dom.cameraBtn.addEventListener('click', () => {
+        showToast('📷 AI Crop & Fertilizer Scanner: Scanning package label... 100% Genuine Certified Batch!');
+      });
+    }
+
     // Search Input
     dom.searchInput.addEventListener('input', (e) => {
       state.searchQuery = e.target.value.toLowerCase().trim();
@@ -523,14 +570,39 @@
     });
 
     // Quick Search Tags
-    dom.quickTagsScroller.addEventListener('click', (e) => {
-      const tag = e.target.closest('.quick-tag');
-      if (!tag) return;
-      const query = tag.getAttribute('data-query');
-      dom.searchInput.value = query === 'all' ? '' : query;
-      state.searchQuery = query === 'all' ? '' : query.toLowerCase();
-      renderProducts();
-    });
+    if (dom.quickTagsScroller) {
+      dom.quickTagsScroller.addEventListener('click', (e) => {
+        const tag = e.target.closest('.quick-tag');
+        if (!tag) return;
+        const query = tag.getAttribute('data-query');
+        dom.searchInput.value = query === 'all' ? '' : query;
+        state.searchQuery = query === 'all' ? '' : query.toLowerCase();
+        renderProducts();
+      });
+    }
+
+    // Meesho Filter & Sort Bar
+    const filterBar = document.querySelector('.meesho-filter-bar');
+    if (filterBar) {
+      filterBar.addEventListener('click', (e) => {
+        const btn = e.target.closest('.meesho-filter-btn');
+        if (!btn) return;
+        filterBar.querySelectorAll('.meesho-filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        state.activeSort = btn.getAttribute('data-sort') || 'popular';
+        renderProducts();
+      });
+    }
+
+    // Meesho Category Modal Sidebar
+    if (dom.meeshoCatSidebar) {
+      dom.meeshoCatSidebar.addEventListener('click', (e) => {
+        const item = e.target.closest('.cat-sidebar-item');
+        if (!item) return;
+        const cat = item.getAttribute('data-cat');
+        renderCategoriesContent(cat);
+      });
+    }
 
     // Bottom Navigation Bar
     dom.bottomNav.addEventListener('click', (e) => {
@@ -588,15 +660,15 @@
       renderCategories();
       renderProducts();
       window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else if (tab === 'categories') {
+      openCategoriesModal();
     } else if (tab === 'shops') {
       const shopsSection = document.getElementById('shopsSection');
       if (shopsSection) shopsSection.scrollIntoView({ behavior: 'smooth' });
-    } else if (tab === 'dosage') {
-      openModal(dom.modalDosage);
-    } else if (tab === 'cart') {
-      openCartSheet();
     } else if (tab === 'orders') {
       openOrdersModal();
+    } else if (tab === 'account') {
+      openModal(dom.modalAccount);
     }
   }
 
@@ -688,7 +760,7 @@
     if (!dom.productsGrid) return;
     const t = i18n[state.language];
 
-    let items = AGRO_DATA.products;
+    let items = [...AGRO_DATA.products];
 
     // Filter by category
     if (state.selectedCategory !== 'all') {
@@ -709,6 +781,23 @@
         p.description.toLowerCase().includes(state.searchQuery) ||
         p.shopName.toLowerCase().includes(state.searchQuery)
       );
+    }
+
+    // Sorting Logic
+    if (state.activeSort === 'price-low') {
+      items.sort((a, b) => a.price - b.price);
+    } else if (state.activeSort === 'rating') {
+      items.sort((a, b) => b.rating - a.rating);
+    } else if (state.activeSort === 'subsidized') {
+      items.sort((a, b) => (b.isGovtSubsidized ? 1 : 0) - (a.isGovtSubsidized ? 1 : 0));
+    } else {
+      // 'popular'
+      items.sort((a, b) => (b.reviews || 0) - (a.reviews || 0));
+    }
+
+    // Update product count badge
+    if (dom.productsCountBadge) {
+      dom.productsCountBadge.textContent = `${items.length} ${state.language === 'mr' ? 'उत्पादने' : (state.language === 'hi' ? 'उत्पाद' : 'Products')}`;
     }
 
     if (items.length === 0) {
@@ -734,12 +823,17 @@
       const inCartQty = cartItem ? cartItem.qty : 0;
       const displayName = getLocalizedText(p, 'name');
       const shopDisplayName = getLocalizedText(AGRO_DATA.shops.find(s => s.id === p.shopId), 'name') || p.shopName;
+      const isWishlisted = state.wishlist.includes(p.id);
+      const originalPrice = p.originalPrice || Math.round(p.price * 1.25);
 
       return `
         <div class="product-card">
           <div class="product-img-wrapper" onclick="AgroApp.openProductModal('${p.id}')">
-            <img class="product-img" src="${p.image}" alt="${p.name}" loading="lazy" />
-            <span class="product-discount-pill">${p.discount}</span>
+            <span class="product-trusted-badge">✓ Agro Verified</span>
+            <button class="card-wishlist-btn ${isWishlisted ? 'active' : ''}" onclick="event.stopPropagation(); AgroApp.toggleWishlist('${p.id}')" title="Wishlist">
+              ${isWishlisted ? '❤️' : '🤍'}
+            </button>
+            <img class="product-img" src="${p.image}" alt="${p.name}" loading="lazy" onerror="this.src='images/fertilizers/iffco_urea_45kg.jpg'" />
             <span class="product-shop-pill">📍 ${shopDisplayName}</span>
           </div>
           <div class="product-details">
@@ -747,13 +841,14 @@
             <h4 class="product-name" onclick="AgroApp.openProductModal('${p.id}')" title="${displayName}">
               ${displayName}
             </h4>
-            <div class="product-rating-row">
-              <span class="stars">★ ${p.rating}</span>
-              <span class="rating-count">(${p.reviews})</span>
-            </div>
-            <div class="price-row">
+            <div class="meesho-price-row">
               <span class="current-price">₹${p.price}</span>
-              ${p.originalPrice ? `<span class="original-price">₹${p.originalPrice}</span>` : ''}
+              <span class="original-price">₹${originalPrice}</span>
+              <span class="meesho-discount-tag">${p.discount}</span>
+            </div>
+            <div class="meesho-perks-row">
+              <span class="meesho-free-delivery">Free Delivery</span>
+              <span class="meesho-rating-pill">★ ${p.rating}</span>
             </div>
             <div class="card-actions">
               ${inCartQty > 0 ? `
@@ -827,13 +922,21 @@
 
     const t = i18n[state.language];
 
-    // Nav Badge
+    // Nav Badges (Top Header + Bottom Nav)
     if (dom.cartBadgeNav) {
       if (totalCount > 0) {
         dom.cartBadgeNav.textContent = totalCount;
         dom.cartBadgeNav.style.display = 'flex';
       } else {
         dom.cartBadgeNav.style.display = 'none';
+      }
+    }
+    if (dom.headerCartBadge) {
+      if (totalCount > 0) {
+        dom.headerCartBadge.textContent = totalCount;
+        dom.headerCartBadge.style.display = 'flex';
+      } else {
+        dom.headerCartBadge.style.display = 'none';
       }
     }
 
@@ -1344,10 +1447,169 @@
     }, 2800);
   }
 
+  // --- WISHLIST CONTROLLER ---
+  function toggleWishlist(productId) {
+    const idx = state.wishlist.indexOf(productId);
+    const product = AGRO_DATA.products.find(p => p.id === productId);
+    const prodName = product ? getLocalizedText(product, 'name') : 'Product';
+
+    if (idx > -1) {
+      state.wishlist.splice(idx, 1);
+      showToast(`💔 Removed ${prodName.split('(')[0]} from Wishlist`);
+    } else {
+      state.wishlist.push(productId);
+      showToast(`❤️ Saved ${prodName.split('(')[0]} to Wishlist`);
+    }
+
+    saveWishlist();
+    updateWishlistUI();
+    renderProducts();
+
+    if (dom.modalWishlist && dom.modalWishlist.classList.contains('active')) {
+      renderWishlistSheet();
+    }
+  }
+
+  function saveWishlist() {
+    localStorage.setItem('agro_wishlist', JSON.stringify(state.wishlist));
+  }
+
+  function updateWishlistUI() {
+    const count = state.wishlist.length;
+    if (dom.wishlistBadge) {
+      if (count > 0) {
+        dom.wishlistBadge.textContent = count;
+        dom.wishlistBadge.style.display = 'flex';
+      } else {
+        dom.wishlistBadge.style.display = 'none';
+      }
+    }
+  }
+
+  function openWishlistModal() {
+    renderWishlistSheet();
+    openModal(dom.modalWishlist);
+  }
+
+  function renderWishlistSheet() {
+    if (!dom.wishlistSheetBody) return;
+    const t = i18n[state.language];
+
+    if (state.wishlist.length === 0) {
+      dom.wishlistSheetBody.innerHTML = `
+        <div style="text-align: center; padding: 40px 10px;">
+          <div style="font-size: 48px; margin-bottom: 8px;">❤️</div>
+          <h4 style="font-size: 16px; color: #0f172a; margin-bottom: 4px;">
+            ${state.language === 'mr' ? 'विशलिस्ट रिकामी आहे' : (state.language === 'hi' ? 'विशलिस्ट खाली है' : 'Your Wishlist is Empty')}
+          </h4>
+          <p style="font-size: 12.5px; color: #64748b; margin-bottom: 16px;">
+            ${state.language === 'mr' ? 'उत्पादने नंतर खरेदी करण्यासाठी ❤️ चिन्हावर टॅप करा.' : (state.language === 'hi' ? 'सामान बाद में खरीदने के लिए दिल ❤️ आइकॉन दबाकर सुरक्षित करें।' : 'Tap the heart icon on any fertilizer, seed or tool to save it here.')}
+          </p>
+          <button class="btn-primary-action" onclick="AgroApp.closeAllModals()">
+            ${t.exploreBtn}
+          </button>
+        </div>
+      `;
+      return;
+    }
+
+    const items = state.wishlist.map(id => AGRO_DATA.products.find(p => p.id === id)).filter(Boolean);
+
+    dom.wishlistSheetBody.innerHTML = `
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        ${items.map(p => {
+          const displayName = getLocalizedText(p, 'name');
+          const shopDisplayName = getLocalizedText(AGRO_DATA.shops.find(s => s.id === p.shopId), 'name') || p.shopName;
+          return `
+            <div style="display: flex; align-items: center; gap: 12px; padding: 10px; background: #fff; border: 1px solid #e2e8f0; border-radius: 10px;">
+              <img src="${p.image}" alt="${p.name}" style="width: 56px; height: 56px; object-fit: contain; background: #f8fafc; border-radius: 6px; padding: 4px;" />
+              <div style="flex: 1;">
+                <h5 style="font-size: 13px; font-weight: 700; color: #0f172a; margin-bottom: 2px;">${displayName}</h5>
+                <div style="font-size: 11px; color: #64748b;">${p.packageSize} • 📍 ${shopDisplayName}</div>
+                <div style="font-size: 13px; font-weight: 800; color: #15803d; margin-top: 2px;">₹${p.price}</div>
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 6px; align-items: flex-end;">
+                <button class="btn-view-shop" style="width: auto; padding: 4px 10px; font-size: 11px;" onclick="AgroApp.addToCart('${p.id}');">
+                  + Add
+                </button>
+                <button style="background: none; border: none; font-size: 16px; cursor: pointer;" onclick="AgroApp.toggleWishlist('${p.id}')" title="Remove">
+                  🗑️
+                </button>
+              </div>
+            </div>
+          `;
+        }).join('')}
+      </div>
+    `;
+  }
+
+  // --- CATEGORIES EXPLORER MODAL ---
+  function openCategoriesModal() {
+    renderCategoriesContent(state.activeCatSidebar);
+    openModal(dom.modalCategories);
+  }
+
+  function renderCategoriesContent(catId) {
+    state.activeCatSidebar = catId;
+    if (dom.meeshoCatSidebar) {
+      dom.meeshoCatSidebar.querySelectorAll('.cat-sidebar-item').forEach(item => {
+        if (item.getAttribute('data-cat') === catId) {
+          item.classList.add('active');
+        } else {
+          item.classList.remove('active');
+        }
+      });
+    }
+
+    if (!dom.meeshoCatContent) return;
+
+    let items = AGRO_DATA.products;
+    if (catId !== 'all') {
+      items = items.filter(p => p.category === catId);
+    }
+
+    const t = i18n[state.language];
+
+    dom.meeshoCatContent.innerHTML = `
+      <div style="margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;">
+        <strong style="font-size: 13px; color: #0f172a; text-transform: capitalize;">${catId} (${items.length})</strong>
+        <span style="font-size: 11px; color: #15803d; font-weight: 700; cursor: pointer;" onclick="AgroApp.filterByCategory('${catId}'); AgroApp.closeAllModals();">
+          View All →
+        </span>
+      </div>
+      <div class="meesho-subcat-grid">
+        ${items.map(p => {
+          const displayName = getLocalizedText(p, 'name');
+          return `
+            <div class="meesho-subcat-card" onclick="AgroApp.openProductModal('${p.id}'); AgroApp.closeAllModals();">
+              <div class="meesho-subcat-img-box">
+                <img src="${p.image}" alt="${p.name}" />
+              </div>
+              <span class="meesho-subcat-title">${displayName}</span>
+              <span style="font-size: 11px; font-weight: 800; color: #15803d;">₹${p.price}</span>
+            </div>
+          `;
+        }).join('')}
+      </div>
+    `;
+  }
+
   // --- FILTER ACTIONS ---
   function filterByCategory(categoryId) {
     state.selectedCategory = categoryId;
     state.shopFilterId = null;
+
+    // Sync story circles active state
+    if (dom.storyCategoriesWrapper) {
+      dom.storyCategoriesWrapper.querySelectorAll('.story-circle-item').forEach(el => {
+        if (el.getAttribute('data-category') === categoryId) {
+          el.classList.add('active');
+        } else {
+          el.classList.remove('active');
+        }
+      });
+    }
+
     renderCategories();
     renderProducts();
 
@@ -1366,12 +1628,27 @@
     closeAllModals();
   }
 
+  function searchByTerm(term) {
+    if (dom.searchInput) dom.searchInput.value = term;
+    state.searchQuery = term.toLowerCase().trim();
+    renderProducts();
+    const prodSection = document.getElementById('productsSection');
+    if (prodSection) prodSection.scrollIntoView({ behavior: 'smooth' });
+  }
+
   // --- EXPOSE GLOBAL CONTROLLER ---
   window.AgroApp = {
     filterByCategory,
     filterByShop,
+    searchByTerm,
     addToCart,
     updateCartQty,
+    toggleWishlist,
+    openWishlistModal,
+    openCategoriesModal,
+    renderCategoriesContent,
+    handleNavTab,
+    openModal,
     openProductModal,
     openShopModal,
     openCartSheet,

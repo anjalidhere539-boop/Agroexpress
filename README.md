@@ -103,12 +103,29 @@ AgroExpress includes a `manifest.json` configured for full Progressive Web App s
 ## 📂 Project Structure
 ```
 Agroexpress/
-├── index.html          # Main application structure, modals & bottom sheets
-├── manifest.json       # PWA configuration
+├── index.html          # Main mobile application structure & Meesho modals
+├── manifest.json       # PWA configuration with official brand icons
 ├── README.md           # Documentation & deployment instructions
+├── images/
+│   ├── agroexpress_logo.png             # Official brand logo
+│   ├── agroexpress_logo_transparent.png # Transparent brand header logo
+│   ├── agroexpress_icon.png             # High-res square app icon
+│   ├── icon-192.png / icon-512.png      # PWA home screen icons
+│   └── fertilizers/                     # Real commercial fertilizer packshots
+│       ├── iffco_urea_45kg.jpg          # IFFCO Neem Coated Urea (45 Kg)
+│       ├── iffco_dap_50kg.jpg           # IFFCO DAP (50 Kg)
+│       ├── npk_191919_1kg.jpg           # NPK 19:19:19 Soluble (1 Kg)
+│       ├── vermicompost_25kg.jpg        # Pure Organic Vermicompost (25 Kg)
+│       ├── potash_mop_50kg.jpg          # MOP Potash (50 Kg)
+│       ├── mahadhan_24240_50kg.jpg      # Mahadhan 24:24:0 Complex (50 Kg)
+│       ├── chelated_zinc_500g.jpg       # Chelated Zinc 12% EDTA (500g)
+│       ├── calcium_nitrate_1kg.jpg      # Calcium Nitrate + Boron (1 Kg)
+│       ├── nano_urea_500ml.jpg          # IFFCO Nano Urea (500 ml)
+│       ├── ssp_phosphate_50kg.jpg       # Single Super Phosphate (50 Kg)
+│       └── neem_cake_50kg.jpg           # Organic Neem Cake Powder (50 Kg)
 ├── css/
-│   └── styles.css      # Mobile-first design system, emerald theme & animations
+│   └── styles.css      # Meesho-inspired mobile CSS design system
 └── js/
-    ├── data.js         # Comprehensive sample catalog & shop datasets
-    └── app.js          # Reactive cart, search, dosage calculator, checkout
+    ├── data.js         # Fertilizer, seed, tools & local mandi shop datasets
+    └── app.js          # Cart, wishlist, bottom nav, category explorer, i18n
 ```

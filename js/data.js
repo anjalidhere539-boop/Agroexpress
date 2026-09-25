@@ -11,8 +11,18 @@ const AGRO_DATA = {
       name: 'All Products', 
       hindiName: 'सभी उत्पाद', 
       marathiName: 'सर्व उत्पादने', 
-      icon: '🌾', 
-      count: 26 
+      icon: '🌾',
+      thumb: 'images/fertilizers/iffco_urea_45kg.jpg', 
+      count: 29 
+    },
+    { 
+      id: 'fertilizers', 
+      name: 'Fertilizers (खाद)', 
+      hindiName: 'उर्वरक / खाद', 
+      marathiName: 'खते / पोषण', 
+      icon: '🧪', 
+      thumb: 'images/fertilizers/iffco_urea_45kg.jpg',
+      count: 11 
     },
     { 
       id: 'seeds', 
@@ -20,30 +30,25 @@ const AGRO_DATA = {
       hindiName: 'बीज (Seeds)', 
       marathiName: 'बियाणे (Seeds)', 
       icon: '🌱', 
-      count: 8 
-    },
-    { 
-      id: 'fertilizers', 
-      name: 'Fertilizers (उर्वरक/खाद)', 
-      hindiName: 'उर्वरक / खाद', 
-      marathiName: 'खते / पोषण (Fertilizers)', 
-      icon: '🧪', 
+      thumb: 'https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?auto=format&fit=crop&w=300&q=80',
       count: 8 
     },
     { 
       id: 'pesticides', 
-      name: 'Crop Protection (कीटनाशक)', 
-      hindiName: 'फसल सुरक्षा (कीटनाशक)', 
-      marathiName: 'पीक संरक्षण (कीटकनाशके)', 
+      name: 'Crop Care (कीटनाशक)', 
+      hindiName: 'फसल सुरक्षा', 
+      marathiName: 'पीक संरक्षण', 
       icon: '🛡️', 
+      thumb: 'https://images.unsplash.com/photo-1592417817098-8f3d6910985c?auto=format&fit=crop&w=300&q=80',
       count: 5 
     },
     { 
       id: 'tools', 
-      name: 'Tools & Irrigation (उपकरण)', 
-      hindiName: 'कृषि उपकरण व सिंचाई', 
-      marathiName: 'कृषी अवजारे व सिंचन', 
+      name: 'Farm Tools (उपकरण)', 
+      hindiName: 'कृषि उपकरण', 
+      marathiName: 'कृषी अवजारे', 
       icon: '🚜', 
+      thumb: 'https://images.unsplash.com/photo-1589923188900-85dae523342b?auto=format&fit=crop&w=300&q=80',
       count: 5 
     }
   ],
@@ -208,7 +213,7 @@ const AGRO_DATA = {
   ],
 
   products: [
-    // --- FERTILIZERS (8 Items) ---
+    // --- FERTILIZERS (Real Certified Fertilizer Images) ---
     {
       id: 'fert-1',
       name: 'IFFCO Neem Coated Urea (45 Kg Bag)',
@@ -226,7 +231,7 @@ const AGRO_DATA = {
       inStock: true,
       stockCount: 85,
       featured: true,
-      image: 'https://images.unsplash.com/photo-1628352081506-83c43123ed6d?auto=format&fit=crop&w=600&q=80',
+      image: 'images/fertilizers/iffco_urea_45kg.jpg',
       description: 'Official Neem coated urea essential for nitrogen enrichment, vegetative growth, and lush green leaves in all crops.',
       specs: {
         'Nitrogen Content': '46% Minimum',
@@ -252,7 +257,7 @@ const AGRO_DATA = {
       inStock: true,
       stockCount: 42,
       featured: true,
-      image: 'https://images.unsplash.com/photo-1589923188900-85dae523342b?auto=format&fit=crop&w=600&q=80',
+      image: 'images/fertilizers/iffco_dap_50kg.jpg',
       description: 'Prime source of Phosphorus and Nitrogen for strong root system development, early seedling vigor, and maximum tillering.',
       specs: {
         'Nutrient Ratio': '18% Nitrogen : 46% Phosphorus',
@@ -278,7 +283,7 @@ const AGRO_DATA = {
       inStock: true,
       stockCount: 120,
       featured: false,
-      image: 'https://images.unsplash.com/photo-1595974482597-4b8da8879bc5?auto=format&fit=crop&w=600&q=80',
+      image: 'images/fertilizers/npk_191919_1kg.jpg',
       description: 'Balanced foliar spray fertilizer providing equal parts Nitrogen, Phosphorus, and Potassium for instant plant uptake and quick recovery.',
       specs: {
         'Composition': 'N-P-K (19-19-19) Balanced',
@@ -304,7 +309,7 @@ const AGRO_DATA = {
       inStock: true,
       stockCount: 65,
       featured: false,
-      image: 'https://images.unsplash.com/photo-1585314062340-f1a5a7c9328d?auto=format&fit=crop&w=600&q=80',
+      image: 'images/fertilizers/vermicompost_25kg.jpg',
       description: '100% natural earthworm compost enriched with beneficial microbes, humic acid, and micro-nutrients for high soil aeration and water retention.',
       specs: {
         'Type': 'Organic Bio-Compost',
@@ -330,7 +335,7 @@ const AGRO_DATA = {
       inStock: true,
       stockCount: 28,
       featured: false,
-      image: 'https://images.unsplash.com/photo-1628352081506-83c43123ed6d?auto=format&fit=crop&w=600&q=80',
+      image: 'images/fertilizers/potash_mop_50kg.jpg',
       description: 'Supplies Potassium (K) to boost disease resistance, improve grain weight, and enhance crop quality and drought tolerance.',
       specs: {
         'Potash Content': '60% K2O',
@@ -356,7 +361,7 @@ const AGRO_DATA = {
       inStock: true,
       stockCount: 50,
       featured: false,
-      image: 'https://images.unsplash.com/photo-1595974482597-4b8da8879bc5?auto=format&fit=crop&w=600&q=80',
+      image: 'images/fertilizers/mahadhan_24240_50kg.jpg',
       description: 'High grade Ammonium Phosphate Sulphate ideal for oilseeds, pulses, and sugarcane. Contains vital Sulphur for protein and oil synthesis.',
       specs: {
         'Nitrogen': '24%',
@@ -382,7 +387,7 @@ const AGRO_DATA = {
       inStock: true,
       stockCount: 60,
       featured: false,
-      image: 'https://images.unsplash.com/photo-1585314062340-f1a5a7c9328d?auto=format&fit=crop&w=600&q=80',
+      image: 'images/fertilizers/chelated_zinc_500g.jpg',
       description: '100% water soluble chelated Zinc (EDTA). Cures yellowing of leaf veins (Khaira disease in paddy) and accelerates enzyme activation.',
       specs: {
         'Formulation': 'Zinc EDTA 12%',
@@ -408,13 +413,92 @@ const AGRO_DATA = {
       inStock: true,
       stockCount: 75,
       featured: false,
-      image: 'https://images.unsplash.com/photo-1589923188900-85dae523342b?auto=format&fit=crop&w=600&q=80',
+      image: 'images/fertilizers/calcium_nitrate_1kg.jpg',
       description: 'Prevents fruit cracking, blossom end rot in tomatoes, and improves fruit firmness, color, and shelf-life.',
       specs: {
         'Nitrate Nitrogen': '15.5%',
         'Calcium': '18.8%',
         'Boron': '0.2%',
         'Recommended For': 'Tomato, Chilli, Pomegranate, Grapes, Watermelon'
+      }
+    },
+    {
+      id: 'fert-9',
+      name: 'IFFCO Nano Urea (Liquid 500 ml Bottle)',
+      hindiName: 'इफको नैनो यूरिया तरल (500 मि.ली.)',
+      marathiName: 'इफको नॅनो युरिया लिक्विड (500 मि.ली.)',
+      category: 'fertilizers',
+      shopId: 'shop-1',
+      shopName: 'Kisan Krishi Seva Kendra',
+      price: 225,
+      originalPrice: 240,
+      discount: '6% OFF',
+      packageSize: '500 ml Bottle',
+      rating: 4.9,
+      reviews: 310,
+      inStock: true,
+      stockCount: 110,
+      featured: true,
+      image: 'images/fertilizers/nano_urea_500ml.jpg',
+      description: 'Revolutionary nanotechnology fertilizer! 1 bottle of 500 ml Nano Urea effectively replaces 1 full 45 kg bag of conventional urea.',
+      specs: {
+        'Nitrogen Content': '4.0% Total Nitrogen (w/v)',
+        'Efficiency': '> 80% absorption',
+        'Recommended For': 'All field crops, cereals, fruits, pulses',
+        'Dosage': '2-4 ml per Litre of water during active tillering'
+      }
+    },
+    {
+      id: 'fert-10',
+      name: 'Single Super Phosphate (SSP 16% P 50 Kg)',
+      hindiName: 'सिंगल सुपर फास्फेट एसएसपी (50 किलो बोरी)',
+      marathiName: 'सिंगल सुपर फॉस्फेट एसएसपी (50 किलो)',
+      category: 'fertilizers',
+      shopId: 'shop-4',
+      shopName: 'Annadata Fertilizer Depot',
+      price: 495,
+      originalPrice: 530,
+      discount: '7% OFF',
+      packageSize: '50 Kg Bag',
+      rating: 4.7,
+      reviews: 140,
+      inStock: true,
+      stockCount: 45,
+      featured: false,
+      image: 'images/fertilizers/ssp_phosphate_50kg.jpg',
+      description: 'Economical source of Phosphate (16%), Sulphur (11%), and Calcium (19%). Ideal for oilseed crops like Mustard, Groundnut, and Soybean.',
+      specs: {
+        'Nutrients': '16% P2O5, 11% Sulphur, 19% Calcium',
+        'Form': 'Powder / Granular',
+        'Recommended For': 'Oilseeds, Pulses, Legumes, Vegetables',
+        'Dosage': '100-150 Kg / Acre as basal application'
+      }
+    },
+    {
+      id: 'fert-11',
+      name: '100% Pure Organic Neem Cake Powder (50 Kg)',
+      hindiName: 'शुद्ध जैविक नीम खली खाद (50 किलो बोरी)',
+      marathiName: 'शुद्ध सेंद्रिय निंबोळी पेंड खत (50 किलो)',
+      category: 'fertilizers',
+      shopId: 'shop-2',
+      shopName: 'Jai Kisan Agro Chemicals',
+      price: 1150,
+      originalPrice: 1280,
+      discount: '10% OFF',
+      packageSize: '50 Kg Bag',
+      rating: 4.8,
+      reviews: 95,
+      inStock: true,
+      stockCount: 35,
+      featured: false,
+      image: 'images/fertilizers/neem_cake_50kg.jpg',
+      description: 'Dual benefit organic fertilizer and natural soil nematode repellent. Prevents white grub attack and slowly releases nitrogen.',
+      specs: {
+        'Nitrogen (N)': '2.5 - 3.5%',
+        'Phosphorus (P)': '1.0 - 1.5%',
+        'Potassium (K)': '1.4 - 2.0%',
+        'Pest Protection': 'Termites, Nematodes, White grubs',
+        'Dosage': '100 Kg / Acre'
       }
     },
 

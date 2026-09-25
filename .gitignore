@@ -1,0 +1,15 @@
+# Dependencies & Editors
+.vscode/
+.idea/
+*.log
+
+# OS Generated
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+.DS_Store
+
+# Temporary scratch
+rendered.html
+rendered_output.html

@@ -11,6 +11,8 @@
 
   <!-- Web App Manifest -->
   <link rel="manifest" href="manifest.json" />
+  <link rel="icon" type="image/png" href="images/agroexpress_icon.png" />
+  <link rel="apple-touch-icon" href="images/agroexpress_icon.png" />
 
   <!-- Google Font: Plus Jakarta Sans -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -28,7 +30,7 @@
     <!-- Top Preview Bar for Desktop Viewers -->
     <header class="desktop-preview-bar">
       <div class="badge-label">
-        <span class="pulse-dot"></span>
+        <img src="images/agroexpress_icon.png" alt="AgroExpress" style="width: 22px; height: 22px; border-radius: 4px; object-fit: contain;" />
         <span>AgroExpress Mobile Web App</span>
       </div>
       <button class="view-toggle-btn" id="viewToggleBtn">🖥️ Fullscreen View</button>
@@ -38,67 +40,122 @@
     <main class="mobile-app-frame" id="mobileFrame">
       <div class="mobile-notch"></div>
 
-      <!-- App Header -->
+      <!-- App Header (Meesho Style) -->
       <header class="app-header">
         <div class="header-top-row">
           <div class="brand-wrapper">
-            <div class="brand-logo-icon">🌾</div>
-            <div class="brand-text">
-              <h1>Agro<span class="express-tag">Express</span></h1>
-              <p id="appTagline">Smart Local Mandi Delivery</p>
+            <a href="#" class="brand-logo-link" onclick="AgroApp.handleNavTab('home'); return false;" title="AgroExpress - Your Farm, Our Express">
+              <img src="images/agroexpress_logo_transparent.png" alt="AgroExpress Logo" class="brand-header-logo" />
+            </a>
+            <div class="header-delivery-pill" id="locationSelectorBar" title="Change delivery location">
+              <span class="loc-pin">📍</span>
+              <span class="loc-summary" id="locSummaryText">Deliver to 452001</span>
+              <span class="loc-arrow">▾</span>
             </div>
           </div>
           <div class="header-actions">
-            <button class="btn-lang" id="langToggleBtn" title="Choose Language / भाषा निवडा">
-              <span id="currentLangTag">🌐 English</span>
+            <button class="btn-header-icon" id="headerWishlistBtn" title="Wishlist / Saved Items">
+              <span class="header-icon-emoji">❤️</span>
+              <span class="header-badge" id="wishlistBadge" style="display: none;">0</span>
             </button>
-            <a href="tel:18001801551" class="btn-help" title="Kisan Call Centre Toll-Free (1800-180-1551)">
-              📞
-            </a>
+            <button class="btn-header-icon" id="headerCartBtn" title="Cart / टोकरी">
+              <span class="header-icon-emoji">🛒</span>
+              <span class="header-badge" id="headerCartBadge" style="display: none;">0</span>
+            </button>
+            <button class="btn-lang-pill" id="langToggleBtn" title="Choose Language / भाषा निवडा">
+              <span id="currentLangTag">🌐 EN</span>
+            </button>
           </div>
         </div>
 
-        <!-- Location Bar -->
-        <div class="location-selector-bar" id="locationSelectorBar" title="Change delivery location">
-          <div class="loc-left">
-            <span class="loc-pin">📍</span>
-            <div>
-              <div class="loc-text" id="locText">Kisan Nagar Mandi Hub</div>
-              <div class="loc-sub" id="locSub">Within 5 km radius • PIN 452001</div>
-            </div>
-          </div>
-          <span class="loc-change" id="locChangeBtn">Change ▾</span>
-        </div>
-
-        <!-- Search Bar with Voice Simulator -->
+        <!-- Search Bar with Camera & Voice (Meesho Style) -->
         <div class="search-container">
           <span class="search-icon">🔍</span>
           <input 
             type="text" 
             class="search-input" 
             id="searchInput" 
-            placeholder="Search seeds, urea, pesticides, tools..." 
+            placeholder="Try searching Urea, DAP, Seeds, Sprayer..." 
             autocomplete="off"
           />
-          <button class="mic-btn" id="micBtn" title="Speak to search (Bol kar khojein)">
+          <button class="search-action-btn camera-btn" id="cameraBtn" title="Scan Crop or Label (Crop Doctor)">
+            📷
+          </button>
+          <button class="search-action-btn mic-btn" id="micBtn" title="Speak to search (Bol kar khojein)">
             🎙️
           </button>
         </div>
 
-        <!-- Quick Filter Tags -->
-        <div class="quick-tags-scroller" id="quickTagsScroller">
-          <span class="quick-tag" data-query="all" id="tagAll">🌾 All Items</span>
-          <span class="quick-tag" data-query="Urea" id="tagUrea">🧪 Neem Urea</span>
-          <span class="quick-tag" data-query="DAP" id="tagDAP">🧪 IFFCO DAP</span>
-          <span class="quick-tag" data-query="Wheat Seeds" id="tagWheat">🌱 Wheat Seeds</span>
-          <span class="quick-tag" data-query="Basmati" id="tagBasmati">🌱 Basmati Paddy</span>
-          <span class="quick-tag" data-query="Pesticide" id="tagPest">🛡️ Bio-Pesticide</span>
-          <span class="quick-tag" data-query="Sprayer" id="tagSprayer">🚜 Sprayer Pump</span>
+        <!-- Meesho Story Circles (Horizontal Category Scroller) -->
+        <div class="story-categories-wrapper" id="storyCategoriesWrapper">
+          <div class="story-circle-item active" data-category="all" onclick="AgroApp.filterByCategory('all')">
+            <div class="story-circle-thumb all-icon">🌾</div>
+            <span class="story-label" id="storyLabelAll">All</span>
+          </div>
+          <div class="story-circle-item" data-category="fertilizers" onclick="AgroApp.filterByCategory('fertilizers')">
+            <div class="story-circle-thumb">
+              <img src="images/fertilizers/iffco_urea_45kg.jpg" alt="Fertilizers" />
+            </div>
+            <span class="story-label" id="storyLabelFert">Fertilizers</span>
+          </div>
+          <div class="story-circle-item" data-category="seeds" onclick="AgroApp.filterByCategory('seeds')">
+            <div class="story-circle-thumb">
+              <img src="https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?auto=format&fit=crop&w=150&q=80" alt="Seeds" />
+            </div>
+            <span class="story-label" id="storyLabelSeeds">Seeds</span>
+          </div>
+          <div class="story-circle-item" data-category="pesticides" onclick="AgroApp.filterByCategory('pesticides')">
+            <div class="story-circle-thumb">
+              <img src="https://images.unsplash.com/photo-1592417817098-8f3d6910985c?auto=format&fit=crop&w=150&q=80" alt="Pesticides" />
+            </div>
+            <span class="story-label" id="storyLabelPest">Crop Care</span>
+          </div>
+          <div class="story-circle-item" data-category="tools" onclick="AgroApp.filterByCategory('tools')">
+            <div class="story-circle-thumb">
+              <img src="https://images.unsplash.com/photo-1589923188900-85dae523342b?auto=format&fit=crop&w=150&q=80" alt="Tools" />
+            </div>
+            <span class="story-label" id="storyLabelTools">Tools</span>
+          </div>
+          <div class="story-circle-item" data-query="nano urea" onclick="AgroApp.searchByTerm('nano urea')">
+            <div class="story-circle-thumb">
+              <img src="images/fertilizers/nano_urea_500ml.jpg" alt="Nano Urea" />
+            </div>
+            <span class="story-label">Nano Urea</span>
+          </div>
+          <div class="story-circle-item" data-query="organic" onclick="AgroApp.searchByTerm('vermicompost')">
+            <div class="story-circle-thumb">
+              <img src="images/fertilizers/vermicompost_25kg.jpg" alt="Organic Khad" />
+            </div>
+            <span class="story-label">Organic</span>
+          </div>
         </div>
       </header>
 
       <!-- Scrollable App Content -->
       <section class="app-content" id="appContent">
+
+        <!-- Meesho Trust Banner Strip -->
+        <div class="meesho-trust-strip">
+          <div class="trust-item">
+            <span class="trust-icon">🚚</span>
+            <span>Free Delivery</span>
+          </div>
+          <div class="trust-divider">•</div>
+          <div class="trust-item">
+            <span class="trust-icon">💵</span>
+            <span>Cash on Delivery</span>
+          </div>
+          <div class="trust-divider">•</div>
+          <div class="trust-item">
+            <span class="trust-icon">🏷️</span>
+            <span>Lowest Price</span>
+          </div>
+          <div class="trust-divider">•</div>
+          <div class="trust-item">
+            <span class="trust-icon">🌾</span>
+            <span>100% Genuine</span>
+          </div>
+        </div>
 
         <!-- Promotional Carousel -->
         <div class="banner-carousel-container">
@@ -110,7 +167,23 @@
           <div class="categories-pills" id="categoriesPills"></div>
         </div>
 
-        <!-- Crop Dosage Calculator Banner Card -->
+        <!-- Sort & Filter Bar (Meesho Style) -->
+        <div class="meesho-filter-bar">
+          <div class="filter-sort-btn active" data-sort="popular" id="sortPopularBtn">
+            <span>🔥 Popular</span>
+          </div>
+          <div class="filter-sort-btn" data-sort="price-low" id="sortPriceLowBtn">
+            <span>Price: Low to High</span>
+          </div>
+          <div class="filter-sort-btn" data-sort="rating" id="sortRatingBtn">
+            <span>Rating 4.5+ ★</span>
+          </div>
+          <div class="filter-sort-btn" data-sort="subsidized" id="sortSubsidizedBtn">
+            <span>Govt. Subsidized</span>
+          </div>
+        </div>
+
+        <!-- Crop Dosage Calculator Promo Card -->
         <div class="calculator-card-promo" onclick="AgroApp.handleNavTab ? AgroApp.handleNavTab('dosage') : document.getElementById('modalDosage').classList.add('active');">
           <div class="calc-icon-box">📐</div>
           <div class="calc-info">
@@ -126,7 +199,7 @@
             <h3 class="section-title">
               <span class="title-icon">🏪</span> <span id="nearbyShopsTitle">Nearby Agri Retailers</span>
             </h3>
-            <span class="section-link" id="viewAllShopsLink" onclick="AgroApp.filterByCategory('all')">View All</span>
+            <span class="section-link" id="viewAllShopsLink" onclick="AgroApp.handleNavTab('shops')">View All</span>
           </div>
           <div class="shops-scroller" id="shopsScroller"></div>
         </div>
@@ -137,7 +210,10 @@
             <h3 class="section-title">
               <span class="title-icon">📦</span> <span id="productsTitle">Certified Farm Products</span>
             </h3>
-            <span class="section-link" id="resetProductsLink" onclick="AgroApp.filterByCategory('all')">Reset</span>
+            <div class="products-header-right">
+              <span class="products-count-badge" id="productsCountBadge">0 Products</span>
+              <span class="section-link" id="resetProductsLink" onclick="AgroApp.filterByCategory('all')">Reset</span>
+            </div>
           </div>
           <div class="products-grid" id="productsGrid"></div>
         </div>
@@ -158,28 +234,28 @@
         </div>
       </div>
 
-      <!-- Bottom Navigation Bar -->
+      <!-- Bottom Navigation Bar (Meesho Style: Home, Categories, Shops, Orders, Account) -->
       <nav class="bottom-nav" id="bottomNav">
-        <button class="nav-tab active" data-tab="home">
+        <button class="nav-tab active" data-tab="home" id="tabHome">
           <span class="tab-icon">🏠</span>
-          <span id="navHomeText">Home</span>
+          <span class="tab-label" id="navHomeText">Home</span>
         </button>
-        <button class="nav-tab" data-tab="shops">
+        <button class="nav-tab" data-tab="categories" id="tabCategories">
+          <span class="tab-icon">🗂️</span>
+          <span class="tab-label" id="navCategoriesText">Categories</span>
+        </button>
+        <button class="nav-tab" data-tab="shops" id="tabShops">
           <span class="tab-icon">🏪</span>
-          <span id="navShopsText">Shops</span>
+          <span class="tab-label" id="navShopsText">Mandi Shops</span>
         </button>
-        <button class="nav-tab" data-tab="dosage">
-          <span class="tab-icon">🧪</span>
-          <span id="navDosageText">Dosage</span>
-        </button>
-        <button class="nav-tab" data-tab="cart">
-          <span class="tab-icon">🛒</span>
-          <span id="navCartText">Cart</span>
-          <span class="nav-badge" id="cartBadgeNav" style="display: none;">0</span>
-        </button>
-        <button class="nav-tab" data-tab="orders">
+        <button class="nav-tab" data-tab="orders" id="tabOrders">
           <span class="tab-icon">📦</span>
-          <span id="navOrdersText">Orders</span>
+          <span class="tab-label" id="navOrdersText">Orders</span>
+          <span class="nav-badge" id="ordersBadgeNav" style="display: none;">0</span>
+        </button>
+        <button class="nav-tab" data-tab="account" id="tabAccount">
+          <span class="tab-icon">👤</span>
+          <span class="tab-label" id="navAccountText">Account</span>
         </button>
       </nav>
 
@@ -402,9 +478,139 @@
           </div>
         </div>
 
-        <button class="btn-primary-action" id="confirmLangBtn" style="margin-top: 8px;">
-          Apply Language / भाषा लागू करा
-        </button>
+  <!-- 9. Meesho-Style Dedicated Categories Explorer Sheet -->
+  <div class="modal-overlay" id="modalCategories">
+    <div class="bottom-sheet categories-full-sheet">
+      <div class="sheet-handle"></div>
+      <div class="sheet-header">
+        <h4 class="sheet-title">🗂️ All Farming Categories</h4>
+        <button class="btn-close-sheet">✕</button>
+      </div>
+      <div class="sheet-body meesho-cat-layout">
+        <!-- Left Categories Sidebar -->
+        <div class="meesho-cat-sidebar" id="meeshoCatSidebar">
+          <div class="cat-sidebar-item active" data-cat="fertilizers">
+            <span class="cat-sidebar-icon">🧪</span>
+            <span class="cat-sidebar-text">Fertilizers</span>
+          </div>
+          <div class="cat-sidebar-item" data-cat="seeds">
+            <span class="cat-sidebar-icon">🌱</span>
+            <span class="cat-sidebar-text">Seeds</span>
+          </div>
+          <div class="cat-sidebar-item" data-cat="pesticides">
+            <span class="cat-sidebar-icon">🛡️</span>
+            <span class="cat-sidebar-text">Crop Care</span>
+          </div>
+          <div class="cat-sidebar-item" data-cat="tools">
+            <span class="cat-sidebar-icon">🚜</span>
+            <span class="cat-sidebar-text">Farm Tools</span>
+          </div>
+          <div class="cat-sidebar-item" data-cat="all">
+            <span class="cat-sidebar-icon">🌾</span>
+            <span class="cat-sidebar-text">All Items</span>
+          </div>
+        </div>
+
+        <!-- Right Subcategory Grid -->
+        <div class="meesho-cat-content" id="meeshoCatContent">
+          <!-- Populated dynamically via JS -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 10. Meesho-Style Account & Farmer Profile Sheet -->
+  <div class="modal-overlay" id="modalAccount">
+    <div class="bottom-sheet">
+      <div class="sheet-handle"></div>
+      <div class="sheet-header">
+        <h4 class="sheet-title">👤 Farmer Account</h4>
+        <button class="btn-close-sheet">✕</button>
+      </div>
+      <div class="sheet-body" style="padding-top: 8px;">
+        <div class="account-profile-card">
+          <div class="account-avatar">👨‍🌾</div>
+          <div class="account-details">
+            <h4>Ramesh Patel</h4>
+            <p>+91 98765 43210</p>
+            <span class="kisan-badge">✓ PM Kisan Verified Farmer</span>
+          </div>
+        </div>
+
+        <div class="account-menu-list">
+          <div class="account-menu-item" onclick="AgroApp.openOrdersModal();">
+            <span class="menu-icon">📦</span>
+            <div class="menu-text">
+              <strong>My Farm Orders</strong>
+              <small>Track live Mandi delivery & OTP</small>
+            </div>
+            <span class="menu-arrow">→</span>
+          </div>
+
+          <div class="account-menu-item" onclick="AgroApp.openWishlistModal();">
+            <span class="menu-icon">❤️</span>
+            <div class="menu-text">
+              <strong>My Wishlist</strong>
+              <small>Saved seeds, fertilizers & machinery</small>
+            </div>
+            <span class="menu-arrow">→</span>
+          </div>
+
+          <div class="account-menu-item" onclick="AgroApp.openModal(document.getElementById('modalDosage'));">
+            <span class="menu-icon">📐</span>
+            <div class="menu-text">
+              <strong>Crop Dosage Calculator</strong>
+              <small>Calculate Bags of Urea & DAP for your acre</small>
+            </div>
+            <span class="menu-arrow">→</span>
+          </div>
+
+          <div class="account-menu-item" onclick="AgroApp.openModal(document.getElementById('modalLocation'));">
+            <span class="menu-icon">📍</span>
+            <div class="menu-text">
+              <strong>Mandi & Delivery Location</strong>
+              <small id="accountLocationSub">Kisan Nagar Mandi Hub (PIN 452001)</small>
+            </div>
+            <span class="menu-arrow">→</span>
+          </div>
+
+          <div class="account-menu-item" onclick="AgroApp.openModal(document.getElementById('modalLanguage'));">
+            <span class="menu-icon">🌐</span>
+            <div class="menu-text">
+              <strong>App Language / भाषा</strong>
+              <small id="accountLangSub">English • हिन्दी • मराठी</small>
+            </div>
+            <span class="menu-arrow">→</span>
+          </div>
+
+          <a href="tel:18001801551" class="account-menu-item helpline-item" style="text-decoration: none;">
+            <span class="menu-icon">📞</span>
+            <div class="menu-text">
+              <strong>Kisan Call Centre (Toll-Free)</strong>
+              <small>1800-180-1551 • 24x7 Agri Expert Advice</small>
+            </div>
+            <span class="menu-arrow">Call</span>
+          </a>
+        </div>
+
+        <div style="text-align: center; padding: 16px 0 8px; opacity: 0.9;">
+          <img src="images/agroexpress_logo_transparent.png" alt="AgroExpress" style="height: 30px; object-fit: contain;" />
+          <div style="font-size: 10.5px; color: #64748b; margin-top: 4px; font-weight: 600;">AgroExpress Mobile v2.0 • Made for Indian Farmers 🌾</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 11. Wishlist Sheet -->
+  <div class="modal-overlay" id="modalWishlist">
+    <div class="bottom-sheet">
+      <div class="sheet-handle"></div>
+      <div class="sheet-header">
+        <h4 class="sheet-title">❤️ My Saved Wishlist</h4>
+        <button class="btn-close-sheet">✕</button>
+      </div>
+      <div class="sheet-body" id="wishlistSheetBody">
+        <!-- Populated dynamically via JS -->
       </div>
     </div>
   </div>
